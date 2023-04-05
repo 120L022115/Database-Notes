@@ -25,7 +25,9 @@
             属性名 类型 [NOT NULL], ... ,
             Primary key (属性名列表),
             foreign key(属性名) references 表名(属性名),
-            foreign key ...
+            foreign key ... 
+            unique 
+            check
       );
       类型：CHAR(n)、VARCHAR(n)、int、smallint、numeric(a,b,c,...)、real、float(n)、double precision....
    2. 修改表：添加或删除属性
@@ -49,18 +51,25 @@
                      ORDER BY 列名[ASC|DESC], ...
 
    1. 列/条件表达式的元素：[表名.]列名,聚集函数,+-*/,=,<,>,>=(!<),<=(!>),!= (<> 都是不等于),NOT,AND,OR,[not] Between .. and ..,[not] IN, IS [NOT] NULL, like, upper(),lower(),like,escape,%,_
+   
       like：字符串判断，%多字通配符，\_单字通配符，escape '\\'，用\表示转义（转义通配符为%\_）
       upper,lower：大小写转换
       in+关系表达式
+      项+运算符+some/all+子查询：存在/任意
    2. 聚集函数：COUNT/SUM/AVG/MAX/MIN (DISTINCT|ALL 列表达式)
       COUNT空值不统计
    3. 注意：任何没在group by子句中的属性如果出现在Select子句中的话，只能出现在聚集函数内部！
    4. 关系表达式：查询、视图、表名组成的列表。
    5. 相关子查询：可以在内层关系表达式中使用外层的变量。
       FROM s WHERE exists(...) 可以在内层使用s
-   6. 子查询不能使用ORDER BY语句
-   7. 集合查询：支持对关系表达式进行UNION/INTERSECT/EXCEPT运算（并交差）
-
+                 6. 子查询不能使用ORDER BY语句
+                 7. 集合查询：支持对关系表达式进行UNION/INTERSECT/EXCEPT运算（并交差），**默认合并所有相同元组**，如果不想需要加ALL。
+                 8. 连接
+                 
+                    1. $\theta$链接：b INNER JOIN a
+                    2. 外连接：LEFT/RIGHT/FULL OUTER JOIN
+                    3. 连接条件：natural/on 条件/using 列
+                 
 6. 数据更新：检查完整性规则。
 
    1. 插入：INSERT INTO 表名(属性列) VALUES 值
